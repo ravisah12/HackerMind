@@ -1,22 +1,29 @@
 name: Build EXE
 
-on: [push]
+on:
+  push:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11
-      - name: Install PyInstaller
-        run: pip install pyinstaller
-      - name: Build EXE
-        run: pyinstaller --onefile source_code/main.py
-      - name: Upload EXE
-        uses: actions/upload-artifact@v3
-        with:
-          name: HackerMindAI_exe
-          path: dist/main.exe
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: pip install pyinstaller
+
+    - name: Generate EXE
+      run: pyinstaller --onefile source_code/main.py
+
+    - name: Upload EXE
+      uses: actions/upload-artifact@v3
+      with:
+        name: HackerMindAI_exe
+        path: dist/*.exe
